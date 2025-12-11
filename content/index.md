@@ -3,9 +3,7 @@ title: My Test content page
 description: Testing around
 ---
 
-# This is with Copilot help
-
-# Welcome to my content
+# Welcome Again
 
 Here goes some contents
 
