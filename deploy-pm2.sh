@@ -51,6 +51,12 @@ npm run build
 
 echo "🔄 Managing PM2 process..."
 
+# Copy .env file to the output directory if it exists
+if [ -f .env ]; then
+    echo "📄 Copying .env file to output directory..."
+    cp .env .output/server/.env
+fi
+
 # Check if app is already running in PM2
 if pm2 describe nuxt-app > /dev/null 2>&1; then
     echo "♻️  Restarting existing PM2 process..."
