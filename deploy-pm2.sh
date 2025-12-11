@@ -59,17 +59,16 @@ fi
 
 # Check if app is already running in PM2
 if pm2 describe nuxt-app > /dev/null 2>&1; then
-    echo "♻️  Restarting existing PM2 process..."
-    pm2 restart nuxt-app
-    pm2 save
-else
-    echo "🚀 Starting new PM2 process..."
-    # Start with PM2 using the built output
-    pm2 start .output/server/index.mjs --name nuxt-app
-    pm2 save
-    # Setup PM2 to start on system boot
-    pm2 startup systemd -u root --hp /root || true
+    echo "♻️  Deleting and restarting PM2 process..."
+    pm2 delete nuxt-app
 fi
+
+echo "🚀 Starting PM2 process with ecosystem file..."
+pm2 start ecosystem.config.cjs
+pm2 save
+
+# Setup PM2 to start on system boot
+pm2 startup systemd -u root --hp /root || true
 
 echo "📊 PM2 Status:"
 pm2 list

@@ -44,29 +44,33 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Execute the deployment script
+  // Execute the deployment script in background
   try {
     const { exec } = await import('child_process')
-    const { promisify } = await import('util')
-    const execAsync = promisify(exec)
 
-    console.log('Starting deployment...')
+    console.log('Starting deployment in background...')
     
-    // Pull latest changes and restart
-    const { stdout, stderr } = await execAsync('cd /data/nuxt && git pull origin main && npm install && npm run build && pm2 restart nuxt-app')
+    // Run deployment in background without waiting
+    exec('cd /data/nuxt && git pull origin main && npm install && npm run build && pm2 restart nuxt-app', (error, stdout, stderr) => {
+      if (error) {
+        console.error('Deployment error:', error)
+        return
+      }
+      console.log('Deployment completed successfully')
+      console.log('stdout:', stdout)
+      if (stderr) console.error('stderr:', stderr)
+    })
     
-    console.log('Deployment stdout:', stdout)
-    if (stderr) console.error('Deployment stderr:', stderr)
-    
+    // Respond immediately to GitHub
     return {
       success: true,
-      message: 'Deployment triggered successfully'
+      message: 'Deployment started in background'
     }
   } catch (error: any) {
-    console.error('Deployment error:', error)
+    console.error('Failed to start deployment:', error)
     throw createError({
       statusCode: 500,
-      statusMessage: 'Deployment failed',
+      statusMessage: 'Failed to start deployment',
       data: error.message
     })
   }
