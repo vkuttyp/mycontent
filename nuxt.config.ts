@@ -1,6 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ['@nuxt/content', 'nuxt-studio'],
+  app: {
+    head: {
+     htmlAttrs:{
+      style: 'filter: invert(1);'
+     }
+    }
+  },
+  
   studio: {
     // Git repository configuration (owner and repo are required)
     repository: {
