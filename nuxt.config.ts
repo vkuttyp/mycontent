@@ -1,10 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/content', 'nuxt-studio'],
+  modules: ['@nuxt/content', 'nuxt-studio', '@nuxt/ui'],
   app: {
     head: {
      htmlAttrs:{
-      style: 'filter: invert(1);'
+      // style: 'filter: invert(1);'
      }
     }
   },
